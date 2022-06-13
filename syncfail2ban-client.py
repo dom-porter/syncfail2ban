@@ -12,10 +12,9 @@ def sigint_handler(signal, frame):
     sys.exit(0)
 
 
-signal.signal(signal.SIGINT, sigint_handler)
-
-
 def send_message(message_, ip_target_):
+    mq_context = None
+    mq_socket = None
 
     try:
         mq_context = zmq.Context()
@@ -54,31 +53,39 @@ def send_message(message_, ip_target_):
         return "99"
 
 
+signal.signal(signal.SIGINT, sigint_handler)
+
 if __name__ == '__main__':
 
     logging.basicConfig(filename="/var/log/syncfail2ban.log", level=logging.INFO, format="%(asctime)s-%(message)s")
     server_config = SyncConfig(pathlib.Path(__file__).parent.absolute().__str__() + "/" + CONFIG_FILENAME)
 
+    sync_type = 0
+    list_sync_targets = ""
+    ban_action = ""
+    ip_address = ""
+    local_server = server_config.getmq_ip()
+    message = ""
+
     try:
-        # Arguments: -s sync single ip -f for full sync
+        # Used to perform a full sync of a jail
         if str(sys.argv[1]).lower() == "-f":
             sync_type = 2
             jail_name = str(sys.argv[2])
-            list_sync_targets = str(sys.argv[3])
 
+        # Used to sync a single ip to ban or unban
         elif str(sys.argv[1]).lower() == "-s":
             sync_type = 1
             jail_name = str(sys.argv[2])
             ban_action = str(sys.argv[3])
             ip_address = str(sys.argv[4])
-            list_sync_targets = server_config.getsync_servers()
 
+        # Used from the fail2ban action
         elif str(sys.argv[1]).lower() == "-a":
             sync_type = 3
             jail_name = str(sys.argv[2])
             ban_action = str(sys.argv[3])
             ip_address = str(sys.argv[4])
-            local_server = server_config.getmq_ip()
 
         else:
             print("Incorrect launch option used")
@@ -87,8 +94,6 @@ if __name__ == '__main__':
     except ValueError as e_val:
         print("Error: {0} ({1})".format(e_val, str(sys.argv[1])))
         raise SystemExit
-
-    # logging.info(" Info: Syncing with server(s)...")
 
     if sync_type == 2:
         # Full sync of jail_name with list_sync_targets (it's a single target though)
@@ -99,14 +104,15 @@ if __name__ == '__main__':
             ban_list = strRightBack(ban_list.stdout.__str__().lower(), "ip list:").strip()
 
             ban_list = ban_list.split()
-            print("Syncing {0} with {1}" .format(jail_name, list_sync_targets))
 
             for ban_ip in ban_list:
-                response = send_message("{0} banip {1}".format(jail_name, ban_ip), list_sync_targets)
+                message = "{0} banip {1}".format(jail_name, ban_ip)
+                response = send_message(message, local_server)
+
                 if response == "1":
-                    print("Add {0} to {1} - Success" .format(ban_ip, jail_name))
+                    print("{0} - sent to local sync server".format(message))
                 else:
-                    print("Add {0} to {1} - Failure".format(ban_ip, jail_name))
+                    print("{0} - not sent to local sync server".format(message))
 
                 # check if the network connection had an error and stop further connections if it did
                 if response == "99":
@@ -118,22 +124,17 @@ if __name__ == '__main__':
 
     elif sync_type == 1:
         # Single IP address to add to jail_name on all list_sync_targets
-        for ip_target in list_sync_targets.split():
-            print("Syncing {0} with {1}" .format(jail_name, ip_target))
-            response = send_message("{0} {1} {2}".format(jail_name, ban_action, ip_address), ip_target)
+        message = "{0} {1} {2}".format(jail_name, ban_action, ip_address)
+        response = send_message(message, local_server)
 
-            if response == "1":
-                print("Add {0} to {1} - Success".format(ip_address, jail_name))
-            else:
-                print("Add {0} to {1} - Failure".format(ip_address, jail_name))
+        if response == "1":
+            print("{0} - sent to local sync server".format(message))
+        else:
+            print("{0} - not sent to local sync server".format(message))
 
     elif sync_type == 3:
         # Used for the action to send message to local mq_server
         # print("Syncing {0} with {1}".format(jail_name, local_server))
-        response = send_message("{0} {1} {2}".format(jail_name, ban_action, ip_address), local_server)
-
-        # if response == "1":
-             # print("Add {0} to {1} - Success".format(ip_address, jail_name))
-        # else:
-             # print("Add {0} to {1} - Failure".format(ip_address, jail_name))
+        message = "{0} {1} {2}".format(jail_name, ban_action, ip_address)
+        response = send_message(message, local_server)
 
