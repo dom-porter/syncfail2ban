@@ -12,7 +12,7 @@ def sigint_handler(signal, frame):
     sys.exit(0)
 
 
-def send_message(message_, ip_target_):
+def send_message(message, ip_target, server_config):
     mq_context = None
     mq_socket = None
 
@@ -21,14 +21,14 @@ def send_message(message_, ip_target_):
         mq_socket = mq_context.socket(zmq.REQ)
         mq_socket.setsockopt(zmq.LINGER, 0)
 
-        mq_socket.connect("tcp://%s:%s" % (ip_target_, server_config.getmq_port()))
+        mq_socket.connect("tcp://%s:%s" % (ip_target, server_config.mq_port))
 
-        mq_socket.send_string(message_)
+        mq_socket.send_string(message)
         poller = zmq.Poller()
         poller.register(mq_socket, zmq.POLLIN)
 
         # if there is no response from the target host raise an error
-        if poller.poll(int(server_config.gettimeout()) * 1000):
+        if poller.poll(int(server_config.timeout) * 1000):
             response_msg = mq_socket.recv_string()
 
             # Just for testing so it will shutdown the server
@@ -38,7 +38,7 @@ def send_message(message_, ip_target_):
             return response_msg
         else:
             raise IOError("Timeout connecting to server {0}:{1}"
-                          .format(ip_target_, server_config.getmq_port()))
+                          .format(ip_target, server_config.mq_port))
 
     except IOError as e_io:
         print("Error: Unable to connect to server - {0}".format(e_io))
@@ -53,10 +53,7 @@ def send_message(message_, ip_target_):
         return "99"
 
 
-signal.signal(signal.SIGINT, sigint_handler)
-
-if __name__ == '__main__':
-
+def main():
     logging.basicConfig(filename="/var/log/syncfail2ban.log", level=logging.INFO, format="%(asctime)s-%(message)s")
     server_config = SyncConfig(pathlib.Path(__file__).parent.absolute().__str__() + "/" + CONFIG_FILENAME)
 
@@ -64,7 +61,7 @@ if __name__ == '__main__':
     list_sync_targets = ""
     ban_action = ""
     ip_address = ""
-    local_server = server_config.getmq_ip()
+    local_server = server_config.mq_ip
     message = ""
 
     try:
@@ -107,7 +104,7 @@ if __name__ == '__main__':
 
             for ban_ip in ban_list:
                 message = "{0} banip {1}".format(jail_name, ban_ip)
-                response = send_message(message, local_server)
+                response = send_message(message, local_server, server_config)
 
                 if response == "1":
                     print("{0} - sent to local sync server".format(message))
@@ -125,7 +122,7 @@ if __name__ == '__main__':
     elif sync_type == 1:
         # Single IP address to add to jail_name on all list_sync_targets
         message = "{0} {1} {2}".format(jail_name, ban_action, ip_address)
-        response = send_message(message, local_server)
+        response = send_message(message, local_server, server_config)
 
         if response == "1":
             print("{0} - sent to local sync server".format(message))
@@ -136,5 +133,11 @@ if __name__ == '__main__':
         # Used for the action to send message to local mq_server
         # print("Syncing {0} with {1}".format(jail_name, local_server))
         message = "{0} {1} {2}".format(jail_name, ban_action, ip_address)
-        response = send_message(message, local_server)
+        response = send_message(message, local_server, server_config)
+
+
+signal.signal(signal.SIGINT, sigint_handler)
+
+if __name__ == '__main__':
+    main()
 

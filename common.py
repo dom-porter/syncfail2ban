@@ -1,28 +1,73 @@
 import configparser
+import socket
 
 
 # wrapper class for the config file
 class SyncConfig(object):
 
     def __init__(self, path):
-        self.config = configparser.ConfigParser()
-        self.config.read(path)
+        self._config = configparser.ConfigParser()
+        self._config.read(path)
+        self._is_f2b_sync = self._config.getboolean('default', 'f2b_sync', fallback=False)
+        self._mq_port = self._config.get('default', 'mq_port', fallback="18862")
+        self._timeout = self._config.get('default', 'connection_timeout', fallback="10")
+        self._sync_servers = self._config.get('default', 'sync_servers', fallback="")
+        self._mq_ip = self._config.get('default', 'mq_ip', fallback=self.getipv4())
+        self._jail_names = dict(self._config['jails'])
+        self._is_opn_sync = self._config.getboolean('default', 'opn_fw_sync', fallback=False)
+        self._opn_fw_ip = self._config.get('default', 'opn_fw_ip', fallback="")
+        self._opn_aliases = dict(self._config['opn_aliases'])
+        self._opn_key = self._config.get('default', 'opn_key')
+        self._opn_secret = self._config.get('default', 'opn_secret')
 
-    def getmq_port(self):
-        return self.config.get('default','mq_port')
+    @property
+    def is_f2b_sync(self):
+        return self._is_f2b_sync
 
-    def getsync_servers(self):
-        return self.config.get('default','sync_servers')
+    @property
+    def mq_port(self):
+        return self._mq_port
 
-    def getmq_ip(self):
-        return self.config.get('default', 'mq_ip')
-    
-    def gettimeout(self):
-        return self.config.get('default', 'connection_timeout')
+    @property
+    def timeout(self):
+        return self._timeout
 
-    def getjail_names(self):
-        return dict(self.config['jails'])
+    @property
+    def sync_servers(self):
+        return self._sync_servers
 
+    @property
+    def mq_ip(self):
+        return self._mq_ip
+
+    @property
+    def jail_names(self):
+        return self._jail_names
+
+    def getipv4(self):
+        hostname = socket.gethostname()
+        ipaddress = socket.gethostbyname(hostname)
+        return str(ipaddress)
+
+    @property
+    def is_opn_sync(self):
+        return self._is_opn_sync
+
+    @property
+    def opn_fw_ip(self):
+        return self._opn_fw_ip
+
+    @property
+    def opn_aliases(self):
+        return self._opn_aliases
+
+    @property
+    def opn_key(self):
+        return self._opn_key
+
+    @property
+    def opn_secret(self):
+        return self._opn_secret
 
 # Searches srtString from right to left for strPattern and returns a substring
 # containing the chars in the string that follow the pattern
@@ -32,26 +77,6 @@ def strRightBack(str_string, str_pattern):
     end = str_reversed.find(str_reversed_pattern)
     str_return = str_reversed[0:end]
     return str_return[::-1]
-
-
-class SyncList(object):
-
-    def __init__(self, max_length_):
-        self.max_length = max_length_ -1
-        self.sync_list = []
-
-    def add_ip(self, ip_address_):
-        if len(self.sync_list) == self.max_length:
-            self.sync_list.pop(0)
-        else:
-            self.sync_list.append(ip_address_)
-
-    def is_member(self, ip_address_):
-        target = ip_address_.strip()
-        for member in self.sync_list:
-            if member == target:
-                return "1"
-        return "0"
 
 
 # Constants
