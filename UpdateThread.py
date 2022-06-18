@@ -1,5 +1,7 @@
 import subprocess
 import logging
+import threading
+
 import zmq
 from threading import Thread
 from queue import Queue
@@ -72,44 +74,44 @@ def process_message(str_message: str, work_queue: Queue, opn_work_queue: Queue, 
 
 # manage the zmq queue. decide what should be added to local sync-jail and what needs to be sent to target servers
 class UpdateThread(Thread):
-    def __init__(self, server_config, work_queue, opn_work_queue):
+    def __init__(self, server_config: SyncConfig, work_queue: Queue, opn_work_queue: Queue):
         Thread.__init__(self)
         self._server_config = server_config
         self._work_queue = work_queue
         self._opn_work_queue = opn_work_queue
         self._mq_context = zmq.Context()
         self._mq_socket = self._mq_context.socket(zmq.REP)
+        # self.shutdown_flag = threading.Event()
 
     def run(self):
-        logger.debug("UpdateThread - Started")
+        logger.debug("UpdateThread: Started")
 
         try:
             self._mq_socket.bind("tcp://%s:%s" % (self._server_config.mq_ip, self._server_config.mq_port))
             logger.info("Started server {0}:{1}".format(self._server_config.mq_ip, self._server_config.mq_port))
 
-            update_is_continue = True
-
-            while update_is_continue:
+            while True:
                 message = self._mq_socket.recv_string()
 
                 if message == "stop":
-                    # self.logger.info(" Processing - stop")
+                    logger.debug("UpdateThread: Stopping threads")
                     self._work_queue.put("stop")
-                    update_is_continue = False
-                    self._mq_socket.send_string("Server stopped")
+                    self._opn_work_queue.put("stop")
+                    self._mq_socket.send_string("stopped")
+                    break
 
                 else:
-                    logger.info("Processing - {0}".format(message))
+                    logger.debug("UpdateThread: Processing message - {0}".format(message))
                     process_message(message, self._work_queue, self._opn_work_queue, self._server_config)
                     self._mq_socket.send_string("1")
 
             self._mq_socket.close()
             self._mq_context.term()
-            self._logger.info("Server stopped")
+            logger.info("Server shutdown")
 
         except zmq.ZMQError as e:
             logger.error("Unable to start server on IP address {0} using port {0} - {1}"
-                               .format(self._server_config.mq_ip, self._server_config.mq_port, e.strerror))
+                         .format(self._server_config.mq_ip, self._server_config.mq_port, e.strerror))
 
         except Exception as e:
             logger.error("Unhandled exception - {0}".format(e))

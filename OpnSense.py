@@ -13,7 +13,7 @@ class OpnSense(object):
         self._host = host
         self._verify = verify
 
-    def api_request(self, method, path, json=None, headers=None) -> requests.Response:
+    def api_request(self, method: str, path: str, json=None, headers=None) -> requests.Response:
 
         if self._verify:
             url = f"https://{self._host}/api/{path}/"
@@ -24,7 +24,7 @@ class OpnSense(object):
             headers = {}
 
         if (method == "POST") and (json is not None):
-            logger.debug(f"OpnSense API POST - {url}")
+            logger.debug(f"OpnSense: API POST - {url}")
             headers = {"Content-Type": "application/json; charset=utf-8"}
             return requests.post(url,
                                  verify=self._verify,
@@ -32,7 +32,7 @@ class OpnSense(object):
                                  headers=headers,
                                  json=json)
         else:
-            logger.debug(f"OpnSense API GET - {url}")
+            logger.debug(f"OpnSense: API GET - {url}")
             return requests.get(url,
                                 verify=self._verify,
                                 auth=(self._api_key, self._api_secret),

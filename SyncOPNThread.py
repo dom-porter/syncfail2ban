@@ -1,4 +1,5 @@
 import logging
+import threading
 from OpnSense import *
 from queue import Queue
 from threading import Thread
@@ -13,21 +14,21 @@ class SyncOPNThread(Thread):
         Thread.__init__(self)
         self._opn_work_queue = opn_work_queue
         self._server_config = server_config
+        # self.shutdown_flag = threading.Event()
 
     def run(self):
-        logger.debug("SyncOPNThread - Started")
-        sync_is_continue = True
+        logger.debug("SyncOPNThread: Started")
 
-        while sync_is_continue:
+        while True:
             message = self._opn_work_queue.get()
             if message == "stop":
                 self._opn_work_queue.task_done()
-                sync_is_continue = False
+                break
 
             else:
                 # sync message to all firewall targets
                 for ip_firewall in self._server_config.opn_fw_ip.split():
-                    logging.info("Sync thread Processing - {0} to {1}".format(message, ip_firewall))
+                    logging.debug("SyncOPNThread: Processing - {0} to {1}".format(message, ip_firewall))
                     response = sync_message_opn(self._server_config, ip_firewall, message)
                     if response == "1":
                         logger.info("Updated firewall - [{0}] {1}".format(ip_firewall, message))
@@ -36,8 +37,10 @@ class SyncOPNThread(Thread):
 
                 self._opn_work_queue.task_done()
 
+        logger.debug("SyncOPNThread: Stopped")
 
-def sync_message_opn(server_config, ip_target, message):
+
+def sync_message_opn(server_config: SyncConfig, ip_target: str, message: str):
     str_message_split = message.split()
     str_alias_name = str_message_split[0]
     str_action = str_message_split[1]

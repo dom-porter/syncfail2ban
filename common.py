@@ -19,55 +19,60 @@ class SyncConfig(object):
         self._opn_aliases = dict(self._config['opn_aliases'])
         self._opn_key = self._config.get('default', 'opn_key')
         self._opn_secret = self._config.get('default', 'opn_secret')
+        self._debug = self._config.getboolean('default', 'log_debug', fallback=False)
 
     @property
-    def is_f2b_sync(self):
+    def is_f2b_sync(self) -> bool:
         return self._is_f2b_sync
 
     @property
-    def mq_port(self):
+    def mq_port(self) -> str:
         return self._mq_port
 
     @property
-    def timeout(self):
+    def timeout(self) -> str:
         return self._timeout
 
     @property
-    def sync_servers(self):
+    def sync_servers(self) -> str:
         return self._sync_servers
 
     @property
-    def mq_ip(self):
+    def mq_ip(self) -> str:
         return self._mq_ip
 
     @property
-    def jail_names(self):
+    def jail_names(self) -> dict:
         return self._jail_names
 
-    def getipv4(self):
+    def getipv4(self) -> str:
         hostname = socket.gethostname()
         ipaddress = socket.gethostbyname(hostname)
         return str(ipaddress)
 
     @property
-    def is_opn_sync(self):
+    def is_opn_sync(self) -> bool:
         return self._is_opn_sync
 
     @property
-    def opn_fw_ip(self):
+    def opn_fw_ip(self) -> str:
         return self._opn_fw_ip
 
     @property
-    def opn_aliases(self):
+    def opn_aliases(self) -> str:
         return self._opn_aliases
 
     @property
-    def opn_key(self):
+    def opn_key(self) -> str:
         return self._opn_key
 
     @property
-    def opn_secret(self):
+    def opn_secret(self) -> str:
         return self._opn_secret
+
+    @property
+    def debug(self) -> bool:
+        return self._debug
 
 # Searches srtString from right to left for strPattern and returns a substring
 # containing the chars in the string that follow the pattern
