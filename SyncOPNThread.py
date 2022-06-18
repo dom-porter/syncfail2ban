@@ -14,7 +14,7 @@ class SyncOPNThread(Thread):
         Thread.__init__(self)
         self._opn_work_queue = opn_work_queue
         self._server_config = server_config
-        # self.shutdown_flag = threading.Event()
+        self.terminated = threading.Event()
 
     def run(self):
         logger.debug("SyncOPNThread: Started")

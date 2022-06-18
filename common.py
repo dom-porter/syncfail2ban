@@ -12,7 +12,10 @@ class SyncConfig(object):
         self._mq_port = self._config.get('default', 'mq_port', fallback="18862")
         self._timeout = self._config.get('default', 'connection_timeout', fallback="10")
         self._sync_servers = self._config.get('default', 'sync_servers', fallback="")
-        self._mq_ip = self._config.get('default', 'mq_ip', fallback=self.getipv4())
+        self._mq_ip = self._config.get('default', 'mq_ip')
+        if self._mq_ip == "":
+            self._mq_ip = self.getipv4()
+
         self._jail_names = dict(self._config['jails'])
         self._is_opn_sync = self._config.getboolean('default', 'opn_fw_sync', fallback=False)
         self._opn_fw_ip = self._config.get('default', 'opn_fw_ip', fallback="")
@@ -46,9 +49,17 @@ class SyncConfig(object):
         return self._jail_names
 
     def getipv4(self) -> str:
-        hostname = socket.gethostname()
-        ipaddress = socket.gethostbyname(hostname)
-        return str(ipaddress)
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.settimeout(0)
+        try:
+            s.connect(('10.255.255.255', 1))
+            IP = s.getsockname()[0]
+
+        except Exception:
+            IP = "127.0.0.1"
+        finally:
+            s.close()
+        return IP
 
     @property
     def is_opn_sync(self) -> bool:

@@ -13,18 +13,35 @@ import signal
 CONFIG_FILENAME = "config.cfg"
 VERSION = "Beta:17062022"
 
+# Configure the global logger. Debug is enabled later once the config is read
 logging.basicConfig(filename="/var/log/syncfail2ban.log",
                     level=logging.INFO,
                     format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger()
 
 
+# Simple exception class used to trigger a shutdown
 class ServiceExit(Exception):
     pass
 
 
+# Function used to register with the signal handlers
 def service_shutdown(signum, frame):
     raise ServiceExit
+
+
+def terminate_update_thread(config: SyncConfig, message: str):
+    mq_context = zmq.Context()
+    mq_socket = mq_context.socket(zmq.REQ)
+    mq_socket.connect("tcp://%s:%s" % (config.mq_ip, config.mq_port))
+    mq_socket.send_string(message)
+    response_msg = mq_socket.recv_string()
+    mq_socket.close()
+    mq_context.term()
+    if response_msg == "stopped":
+        logger.debug("syncfail2ban: UpdateThread confirmed stop")
+    else:
+        logger.debug("syncfail2ban: Failed to stop UpdateThread")
 
 
 def main():
@@ -50,10 +67,16 @@ def main():
     sync_thread = SyncThread(server_config, work_queue)
     opn_sync_thread = SyncOPNThread(server_config, opn_work_queue)
 
+    threads = []
+
     try:
         update_thread.start()
+        threads.append(update_thread)
         sync_thread.start()
+        threads.append(sync_thread)
+
         opn_sync_thread.start()
+        threads.append(opn_sync_thread)
 
         while True:
             time.sleep(0.5)
@@ -64,17 +87,7 @@ def main():
         # opn_sync_thread.shutdown_flag.set()
 
         # Tell UpdateThread to stop, which will stop all the other threads
-        mq_context = zmq.Context()
-        mq_socket = mq_context.socket(zmq.REQ)
-        mq_socket.connect("tcp://%s:%s" % (server_config.mq_ip, server_config.mq_port))
-        mq_socket.send_string("stop")
-        response_msg = mq_socket.recv_string()
-        mq_socket.close()
-        mq_context.term()
-        if response_msg == "stopped":
-            logger.debug("syncfail2ban: UpdateThread confirmed stop")
-        else:
-            logger.debug("syncfail2ban: Failed to stop UpdateThread")
+        terminate_update_thread(server_config, "stop_all")
 
         update_thread.join()
         sync_thread.join()

@@ -15,7 +15,7 @@ class SyncThread(Thread):
         Thread.__init__(self)
         self._server_config = server_config
         self._work_queue = work_queue
-        # self.shutdown_flag = threading.Event()
+        self.terminated = threading.Event()
 
     def run(self):
         logger.debug("SyncThread: Started")

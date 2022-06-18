@@ -81,7 +81,7 @@ class UpdateThread(Thread):
         self._opn_work_queue = opn_work_queue
         self._mq_context = zmq.Context()
         self._mq_socket = self._mq_context.socket(zmq.REP)
-        # self.shutdown_flag = threading.Event()
+        self.terminated = threading.Event()
 
     def run(self):
         logger.debug("UpdateThread: Started")
@@ -93,10 +93,15 @@ class UpdateThread(Thread):
             while True:
                 message = self._mq_socket.recv_string()
 
-                if message == "stop":
-                    logger.debug("UpdateThread: Stopping threads")
+                if message == "stop_all":
+                    logger.debug("UpdateThread: Stopping all threads")
                     self._work_queue.put("stop")
                     self._opn_work_queue.put("stop")
+                    self._mq_socket.send_string("stopped")
+                    break
+
+                elif message == "stop":
+                    logger.debug("UpdateThread: Stopping")
                     self._mq_socket.send_string("stopped")
                     break
 
