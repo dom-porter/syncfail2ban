@@ -1,12 +1,13 @@
-
 import zmq
 import logging
 import pathlib
-from common import *
 import sys
 import subprocess
 import signal
+from SyncConfig import SyncConfig
 
+# Constants
+CONFIG_FILENAME = "config.cfg"
 
 def sigint_handler(signal, frame):
     sys.exit(0)
@@ -51,6 +52,15 @@ def send_message(message, ip_target, server_config):
         mq_socket.close()
         mq_context.term()
         return "99"
+
+# Searches srtString from right to left for strPattern and returns a substring
+# containing the chars in the string that follow the pattern
+def strRightBack(str_string, str_pattern):
+    str_reversed = str_string[::-1]
+    str_reversed_pattern = str_pattern[::-1]
+    end = str_reversed.find(str_reversed_pattern)
+    str_return = str_reversed[0:end]
+    return str_return[::-1]
 
 
 def main():

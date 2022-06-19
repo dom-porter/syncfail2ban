@@ -5,7 +5,7 @@ import zmq
 from UpdateThread import UpdateThread
 from SyncThread import SyncThread
 from SyncOPNThread import SyncOPNThread
-from common import SyncConfig
+from SyncConfig import SyncConfig
 from queue import Queue
 import signal
 
