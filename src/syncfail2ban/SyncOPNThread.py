@@ -48,7 +48,8 @@ class SyncOPNThread(Thread):
 
         opnsense = OpnSense(self._server_config.opn_key,
                             self._server_config.opn_secret,
-                            ip_target)
+                            ip_target,
+                            self._server_config.opn_verify)
 
         alias_controller = opnsense.firewall.alias_controller
 

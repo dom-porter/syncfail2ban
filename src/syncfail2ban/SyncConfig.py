@@ -32,6 +32,7 @@ class SyncConfig(object):
         self._jail_names = dict(self._config['jails'])
         self._is_opn_sync = self._config.getboolean('default', 'opn_fw_sync', fallback=False)
         self._opn_fw_ip = self._config.get('default', 'opn_fw_ip', fallback="")
+        self._opn_verify = self._config.getboolean('default', 'opn_verify', fallback=False)
         self._opn_aliases = dict(self._config['opn_aliases'])
         self._opn_key = self._config.get('default', 'opn_key')
         self._opn_secret = self._config.get('default', 'opn_secret')
@@ -68,6 +69,10 @@ class SyncConfig(object):
     @property
     def opn_fw_ip(self) -> str:
         return self._opn_fw_ip
+
+    @property
+    def opn_verify(self) -> bool:
+        return self._opn_verify
 
     @property
     def opn_aliases(self) -> dict:
