@@ -10,7 +10,7 @@ from queue import Queue
 import signal
 
 # Constants
-CONFIG_FILENAME = "config.cfg"
+CONFIG_FILENAME = "data/config.cfg"
 VERSION = "0.0.1.19062022"
 
 # Configure the global logger. Debug is enabled later once the config is read
