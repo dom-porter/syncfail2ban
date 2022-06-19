@@ -1,0 +1,4 @@
+requests~=2.25.1
+pyzmq~=22.3.0
+configparser~=5.2.0
+setuptools~=60.2.0

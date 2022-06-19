@@ -2,6 +2,20 @@ import configparser
 import socket
 
 
+def getipv4() -> str:
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.settimeout(0)
+    try:
+        s.connect(('10.255.255.255', 1))
+        host_ip = s.getsockname()[0]
+
+    except Exception:
+        host_ip = "127.0.0.1"
+    finally:
+        s.close()
+    return host_ip
+
+
 # wrapper class for the config file
 class SyncConfig(object):
 
@@ -14,8 +28,7 @@ class SyncConfig(object):
         self._sync_servers = self._config.get('default', 'sync_servers', fallback="")
         self._mq_ip = self._config.get('default', 'mq_ip')
         if self._mq_ip == "":
-            self._mq_ip = self.getipv4()
-
+            self._mq_ip = getipv4()
         self._jail_names = dict(self._config['jails'])
         self._is_opn_sync = self._config.getboolean('default', 'opn_fw_sync', fallback=False)
         self._opn_fw_ip = self._config.get('default', 'opn_fw_ip', fallback="")
@@ -47,19 +60,6 @@ class SyncConfig(object):
     @property
     def jail_names(self) -> dict:
         return self._jail_names
-
-    def getipv4(self) -> str:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.settimeout(0)
-        try:
-            s.connect(('10.255.255.255', 1))
-            IP = s.getsockname()[0]
-
-        except Exception:
-            IP = "127.0.0.1"
-        finally:
-            s.close()
-        return IP
 
     @property
     def is_opn_sync(self) -> bool:

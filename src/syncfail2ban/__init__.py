@@ -11,7 +11,7 @@ import signal
 
 # Constants
 CONFIG_FILENAME = "config.cfg"
-VERSION = "Beta:17062022"
+VERSION = "0.0.1.19062022"
 
 # Configure the global logger. Debug is enabled later once the config is read
 logging.basicConfig(filename="/var/log/syncfail2ban.log",
@@ -26,7 +26,7 @@ class ServiceExit(Exception):
 
 
 # Function used to register with the signal handlers
-def service_shutdown(signum, frame):
+def service_shutdown(sig, frame):
     raise ServiceExit
 
 

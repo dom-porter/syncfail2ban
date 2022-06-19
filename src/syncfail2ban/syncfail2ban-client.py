@@ -9,7 +9,8 @@ from SyncConfig import SyncConfig
 # Constants
 CONFIG_FILENAME = "config.cfg"
 
-def sigint_handler(signal, frame):
+
+def sigint_handler(sig, frame):
     sys.exit(0)
 
 
@@ -53,9 +54,10 @@ def send_message(message, ip_target, server_config):
         mq_context.term()
         return "99"
 
+
 # Searches srtString from right to left for strPattern and returns a substring
 # containing the chars in the string that follow the pattern
-def strRightBack(str_string, str_pattern):
+def str_rightback(str_string, str_pattern):
     str_reversed = str_string[::-1]
     str_reversed_pattern = str_pattern[::-1]
     end = str_reversed.find(str_reversed_pattern)
@@ -108,7 +110,7 @@ def main():
             # This is a bit shit.  Access the sqlite3 database directly later
             ban_list = subprocess.run(['fail2ban-client', 'status', jail_name],
                                       check=True, capture_output=True, text=True)
-            ban_list = strRightBack(ban_list.stdout.__str__().lower(), "ip list:").strip()
+            ban_list = str_rightback(ban_list.stdout.__str__().lower(), "ip list:").strip()
 
             ban_list = ban_list.split()
 
@@ -127,7 +129,7 @@ def main():
 
         except subprocess.CalledProcessError as pe:
             print("Error: unable to extract ban list from fail2ban - {0}"
-                  .format(strRightBack(pe.stderr, "ERROR").strip()))
+                  .format(str_rightback(pe.stderr, "ERROR").strip()))
 
     elif sync_type == 1:
         # Single IP address to add to jail_name on all list_sync_targets
@@ -150,4 +152,3 @@ signal.signal(signal.SIGINT, sigint_handler)
 
 if __name__ == '__main__':
     main()
-
