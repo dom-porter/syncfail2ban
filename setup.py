@@ -4,7 +4,7 @@ setup(
     name='syncfail2ban',
     version='0.0.1.19062022',
     packages=find_packages(),
-    package_dir={"syncfail2ban": "src"},
+    package_dir={"": "src"},
     entry_points={
         'console_scripts': ["syncfail2ban = syncfail2ban:main"],
     },
