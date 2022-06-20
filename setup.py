@@ -4,7 +4,7 @@ setup(
     name='syncfail2ban',
     version='0.0.1.20062022',
     packages=find_packages(include=["src.syncfail2ban.*"]),
-    package_dir={"syncfail2ban": "src"},
+    package_dir={"": "src"},
     pymodules =['syncfail2ban', ],
     entry_points={
         'console_scripts': ["syncfail2ban = __init__:main"],
