@@ -9,7 +9,7 @@ setup(
     py_modules=["syncfail2ban", ],
     entry_points={
         'console_scripts': [
-            'syncfil2ban = syncfail2ban:main'
+            'syncfail2ban = syncfail2ban:main'
         ]
     },
     url='',
