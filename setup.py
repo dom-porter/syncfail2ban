@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='syncfail2ban',
     version='0.0.1.20062022',
-    packages=find_packages(),
+    packages=find_packages(include=["src.syncfail2ban.*"]),
     package_dir={"": "src"},
     pymodules =['syncfail2ban', ],
     entry_points={
