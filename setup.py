@@ -12,6 +12,7 @@ setup(
             'syncfail2ban = syncfail2ban:main'
         ]
     },
+    install_requires=['zmq'],
     url='',
     license='Apache License 2.0',
     author='dominic porter',
