@@ -6,9 +6,6 @@ awk_script='BEGIN {FS="="; OFS="="}{if ($$1=="ExecStart") {$$2=exec_path} if (su
 
 syncfail2ban: src/syncfail2ban/syncfail2ban.py setup.py
 	pip install .
-	pip install requests~=2.25.1
-	pip install pyzmq~=22.3.0
-	pip install configparser~=5.2.0
 
 syncfail2ban.service: src/syncfail2ban/syncfail2ban.py
 
