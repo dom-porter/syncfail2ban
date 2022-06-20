@@ -1,0 +1,3 @@
+[console_scripts]
+syncfil2ban = syncfail2ban:main
+

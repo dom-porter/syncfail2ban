@@ -1,0 +1,8 @@
+[Unit]
+Description=Syncfail2ban Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=
+Restart=on-failure

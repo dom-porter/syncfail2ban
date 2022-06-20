@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: syncfail2ban
+Version: 0.0.1.19062022
+Summary: sync fail2ban jails across servers & with OPNSense aliases
+Home-page: UNKNOWN
+Author: dominic porter
+Author-email: dominic.porter@dbpsolutions.com
+License: Apache License 2.0
+Platform: UNKNOWN
+License-File: LICENSE
+
+UNKNOWN
+

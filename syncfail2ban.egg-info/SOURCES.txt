@@ -1,0 +1,9 @@
+LICENSE
+README.md
+setup.py
+syncfail2ban.py
+syncfail2ban.egg-info/PKG-INFO
+syncfail2ban.egg-info/SOURCES.txt
+syncfail2ban.egg-info/dependency_links.txt
+syncfail2ban.egg-info/entry_points.txt
+syncfail2ban.egg-info/top_level.txt
