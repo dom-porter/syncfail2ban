@@ -16,7 +16,6 @@ setup(
     entry_points={
         'console_scripts': [
             'syncfail2ban = syncfail2ban:main',
-            'syncfail2ban-client = syncfail2ban-client:main',
         ]
     },
     install_requires=['pyzmq~=22.3.0',
