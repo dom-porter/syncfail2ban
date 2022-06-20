@@ -4,10 +4,10 @@ import pathlib
 import sys
 import subprocess
 import signal
-from syncfail2ban.SyncConfig import SyncConfig
+from syncfail2ban.syncfail2ban.SyncConfig import SyncConfig
 
 # Constants
-CONFIG_FILENAME = "data/config.cfg"
+CONFIG_FILENAME = "config.cfg"
 
 
 def sigint_handler(sig, frame):
