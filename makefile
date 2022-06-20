@@ -13,6 +13,7 @@ syncfail2band.service: src/syncfail2ban/syncfail2ban.py
 
 install: $(service_dir) $(conf_dir) syncfail2band.service
 	cp syncfail2band.service $(service_dir)
+	cp /src/syncfail2ban.py /etc/syncfail2ban
 
 uninstall:
 	-systemctl stop syncfail2band
