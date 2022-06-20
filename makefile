@@ -4,10 +4,10 @@ all: syncfail2ban syncfail2ban.service
 service_dir=/etc/systemd/system
 awk_script='BEGIN {FS="="; OFS="="}{if ($$1=="ExecStart") {$$2=exec_path} if (substr($$1,1,1) != "\#") {print $$0}}'
 
-syncfail2ban: src/syncfail2ban.py setup.py
+syncfail2ban: src/syncfail2ban/__init__.py.py setup.py
 	pip install .
 
-syncfail2ban.service: src/syncfail2ban.py
+syncfail2ban.service: src/syncfail2ban/__init__.py
 
 install: $(service_dir) $(conf_dir) syncfail2ban.service
 	cp syncfail2ban.service $(service_dir)
