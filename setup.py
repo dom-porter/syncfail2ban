@@ -6,10 +6,10 @@ setup(
     packages=find_packages(),
     package_dir={"": "src"},
     package_data={"src.data": ["config.cfg"]},
-    py_modules=["src.syncfail2ban", ],
+    py_modules=["syncfail2ban", ],
     entry_points={
         'console_scripts': [
-            'syncfil2ban = src.syncfail2ban:main'
+            'syncfil2ban = syncfail2ban:main'
         ]
     },
     url='',
