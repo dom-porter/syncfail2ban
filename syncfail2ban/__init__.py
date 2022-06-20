@@ -17,10 +17,10 @@ import pathlib
 import logging
 import time
 import zmq
-from src.UpdateThread import UpdateThread
-from src.SyncThread import SyncThread
-from src.SyncOPNThread import SyncOPNThread
-from src.SyncConfig import SyncConfig
+from syncfail2ban.UpdateThread import UpdateThread
+from syncfail2ban.SyncThread import SyncThread
+from syncfail2ban.SyncOPNThread import SyncOPNThread
+from syncfail2ban.SyncConfig import SyncConfig
 from queue import Queue
 import signal
 

@@ -4,7 +4,7 @@ import pathlib
 import sys
 import subprocess
 import signal
-from SyncConfig import SyncConfig
+from syncfail2ban.SyncConfig import SyncConfig
 
 # Constants
 CONFIG_FILENAME = "data/config.cfg"

@@ -3,7 +3,7 @@ import threading
 import zmq
 from queue import Queue
 from threading import Thread
-from SyncConfig import SyncConfig
+from syncfail2ban.SyncConfig import SyncConfig
 
 logger = logging.getLogger(__name__)
 

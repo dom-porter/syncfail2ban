@@ -1,4 +1,4 @@
-from AliasController import AliasController
+from syncfail2ban.AliasController import AliasController
 
 
 class Firewall(object):

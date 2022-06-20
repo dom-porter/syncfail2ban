@@ -1,6 +1,6 @@
 import logging
 import requests
-from Firewall import Firewall
+from syncfail2ban.Firewall import Firewall
 
 logger = logging.getLogger(__name__)
 

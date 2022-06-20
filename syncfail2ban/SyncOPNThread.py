@@ -1,9 +1,9 @@
 import logging
 import threading
-from OpnSense import *
+from syncfail2ban.OpnSense import *
 from queue import Queue
 from threading import Thread
-from SyncConfig import SyncConfig
+from syncfail2ban.SyncConfig import SyncConfig
 
 logger = logging.getLogger(__name__)
 
