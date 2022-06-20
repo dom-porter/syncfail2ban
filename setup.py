@@ -4,7 +4,7 @@ setup(
     name='syncfail2ban',
     version='0.0.1.19062022',
     packages=find_packages(include=['src.syncfail2ban', 'src.syncfail2ban.*']),
-    package_dir={"": "src.syncfail2ban"},
+    package_dir={"syncfail2ban": "src"},
     package_data={"src.data": ["config.cfg"]},
     py_modules=["syncfail2ban",
                 "AliasController",
