@@ -18,6 +18,8 @@ install: $(service_dir) $(conf_dir) syncfail2band.service
 uninstall:
 	-systemctl stop syncfail2band
 	-rm -r $(service_dir)/syncfail2band.service
+	-rm -r /etc/syncfail2ban
 
 clean:
 	-rm syncfail2band.service
+	-rm -r /etc/syncfail2ban
