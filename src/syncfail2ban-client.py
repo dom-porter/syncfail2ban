@@ -7,7 +7,7 @@ import signal
 from SyncConfig import SyncConfig
 
 # Constants
-CONFIG_FILENAME = "../data/config.cfg"
+CONFIG_FILENAME = "data/config.cfg"
 
 
 def sigint_handler(sig, frame):
