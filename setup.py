@@ -4,7 +4,7 @@ setup(
     name='syncfail2ban',
     version='0.0.1.19062022',
     packages=find_packages(),
-    package_dir={"": "src"},
+    package_dir={"syncfail2ban": "src"},
     package_data={"src.data": ["config.cfg"]},
     py_modules=["syncfail2ban",
                 "AliasController",
@@ -15,7 +15,8 @@ setup(
                 "UpdateThread", ],
     entry_points={
         'console_scripts': [
-            'syncfail2ban = syncfail2ban:main'
+            'syncfail2ban = syncfail2ban:main',
+            'syncfail2ban-client = syncfail2ban-client:main'
         ]
     },
     install_requires=['zmq'],
