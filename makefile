@@ -1,4 +1,4 @@
-all: syncfail2ban syncfail2band.service
+all: src/syncfail2ban syncfail2band.service
 .PHONY: all syncfail2ban install uninstall clean
 
 service_dir=/etc/systemd/system
