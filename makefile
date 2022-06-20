@@ -11,8 +11,6 @@ syncfail2ban: src/syncfail2ban/syncfail2ban.py setup.py
 	pip install configparser~=5.2.0
 
 syncfail2band.service: src/syncfail2ban/syncfail2ban.py
-# awk is needed to replace the absolute path of mydaemon executable in the .service file
-	awk -v exec_path=$(/etc/syncfail2ban/syncfail2ban) $(awk_script) syncfail2band.service.template > syncfail2band.service
 
 install: $(service_dir) $(conf_dir) syncfail2band.service
 	cp syncfail2band.service $(service_dir)

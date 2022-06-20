@@ -1,8 +1,9 @@
+# syncfail2band.service.template
 [Unit]
 Description=Syncfail2ban Service
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=
+ExecStart=/etc/syncfail2ban/syncfail2ban
 Restart=on-failure
