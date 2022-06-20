@@ -1,4 +1,4 @@
-# syncfail2band.service.template
+# syncfail2ban.service.template
 [Unit]
 Description=Syncfail2ban Service
 After=network.target
