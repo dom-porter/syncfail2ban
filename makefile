@@ -16,7 +16,7 @@ syncfail2band.service: src/syncfail2ban/syncfail2ban.py
 
 install: $(service_dir) $(conf_dir) syncfail2band.service
 	cp syncfail2band.service $(service_dir)
-	cp /usr/home/bin/syncfail2ban /etc/syncfail2ban
+	cp /usr/local/bin/syncfail2ban /etc/syncfail2ban
 	cp src/data/config.cfg /etc/syncfail2ban
 
 uninstall:
