@@ -7,7 +7,7 @@ awk_script='BEGIN {FS="="; OFS="="}{if ($$1=="ExecStart") {$$2=exec_path} if (su
 syncfail2ban: src/__init__.py setup.py
 	pip install .
 
-syncfail2band.service: __init__.py
+syncfail2band.service: src/__init__.py
 # awk is needed to replace the absolute path of mydaemon executable in the .service file
 	awk -v exec_path=$(shell which mydaemon) $(awk_script) syncfail2band.service.template > syncfail2band.service
 
