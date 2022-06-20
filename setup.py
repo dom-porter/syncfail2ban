@@ -6,6 +6,12 @@ setup(
     packages=find_packages(),
     package_dir={"": "src"},
     package_data={"src.data": ["config.cfg"]},
+    py_modules=["src.__init__", ],
+    entry_points={
+        'console_scripts': [
+            'syncfil2ban = __init__:main'
+        ]
+    },
     url='',
     license='Apache License 2.0',
     author='dominic porter',
