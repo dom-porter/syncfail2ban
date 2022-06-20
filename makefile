@@ -1,4 +1,4 @@
-all: syncfail2ban syncfail2band.service
+all: syncfail2ban syncfail2ban.service
 .PHONY: all syncfail2ban install uninstall clean
 
 service_dir=/etc/systemd/system
@@ -10,18 +10,18 @@ syncfail2ban: src/syncfail2ban/syncfail2ban.py setup.py
 	pip install pyzmq~=22.3.0
 	pip install configparser~=5.2.0
 
-syncfail2band.service: src/syncfail2ban/syncfail2ban.py
+syncfail2ban.service: src/syncfail2ban/syncfail2ban.py
 
-install: $(service_dir) $(conf_dir) syncfail2band.service
-	cp syncfail2band.service $(service_dir)
+install: $(service_dir) $(conf_dir) syncfail2ban.service
+	cp syncfail2ban.service $(service_dir)
 	cp /usr/local/bin/syncfail2ban /etc/syncfail2ban
 	cp src/syncfail2ban/data/config.cfg /etc/syncfail2ban
 
 uninstall:
-	-systemctl stop syncfail2band
-	-rm -r $(service_dir)/syncfail2band.service
+	-systemctl stop syncfail2ban
+	-rm -r $(service_dir)/syncfail2ban.service
 	-rm -r /etc/syncfail2ban
 
 clean:
-	-rm syncfail2band.service
+	-rm syncfail2ban.service
 	-rm -r /etc/syncfail2ban
