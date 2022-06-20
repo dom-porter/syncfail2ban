@@ -25,7 +25,8 @@ from queue import Queue
 import signal
 
 # Constants
-CONFIG_FILENAME = "data/config.cfg"
+CONFIG_FILENAME = "config.cfg"
+CONFIG_PATH = "/etc/syncfail2ban"
 VERSION = "0.0.1.19062022"
 
 # Configure the global logger. Debug is enabled later once the config is read
@@ -65,7 +66,7 @@ def main():
     signal.signal(signal.SIGTERM, service_shutdown)
     signal.signal(signal.SIGINT, service_shutdown)
 
-    server_config = SyncConfig(pathlib.Path(__file__).parent.absolute().__str__() + "/" + CONFIG_FILENAME)
+    server_config = SyncConfig(CONFIG_PATH + "/" + CONFIG_FILENAME)
 
     logger.info(f"====================================")
     logger.info(f"    syncfail2ban v{VERSION}")
