@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     pymodules =['syncfail2ban', ],
     entry_points={
-        'console_scripts': ["syncfail2ban = __init__:main"],
+        'console_scripts': ["syncfail2ban = syncfail2ban:main"],
     },
     install_requires=['pyzmq~=22.3.0',
                       'requests~=2.25.1',
