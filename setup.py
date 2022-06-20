@@ -4,10 +4,10 @@ setup(
     name='syncfail2ban',
     version='0.0.1.20062022',
     packages=find_packages(),
-    package_dir={"": ""},
+    package_dir={"": "src"},
     pymodules =['syncfail2ban', ],
     entry_points={
-        'console_scripts': ["syncfail2ban = syncfail2ban:main"],
+        'console_scripts': ["syncfail2ban = __init__:main"],
     },
     install_requires=['pyzmq~=22.3.0',
                       'requests~=2.25.1',
