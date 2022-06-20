@@ -5,5 +5,5 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/etc/syncfail2ban/__init__.py
+ExecStart=/etc/syncfail2ban/syncfail2ban.py
 Restart=on-failure
