@@ -93,9 +93,22 @@ The sync-jail is configured in such a way that fail2ban will never update it dur
         bantime  = -1
         ignoreip = 127.0.0.1/8 192.168.10.0/24
 
+## syncfail2ban-client
+
+The syncfail2ban-client app is used by the action to send information about the ban/unban action to the syncfail2ban server. It will NOT update the local fail2ban jail. It can also be used manually:
+    
+    To send a single action to all other servers:
+    syncfail2ban -a <JAIL-NAME> <BAN_ACTION> <BAD-IP-ADDRES>
+
+    Example:
+    sudo /etc/syncfail2ban/syncfail2ban-client -a postfix banip 19.76.34.123
 
 
+    To send all contents of a jail to all other servers:
+    syncfail2ban -f <JAIL-NAME>
 
+    Example:
+    sudo /etc/syncfail2ban/syncfail2ban-client -a postfix
 
 ## License
 Apache License Version 2.0

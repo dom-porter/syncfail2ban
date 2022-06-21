@@ -97,13 +97,6 @@ def main():
             sync_type = 2
             jail_name = str(sys.argv[2])
 
-        # Used to sync a single ip to ban or unban
-        elif str(sys.argv[1]).lower() == "-s":
-            sync_type = 1
-            jail_name = str(sys.argv[2])
-            ban_action = str(sys.argv[3])
-            ip_address = str(sys.argv[4])
-
         # Used from the fail2ban action
         elif str(sys.argv[1]).lower() == "-a":
             sync_type = 3
@@ -122,7 +115,7 @@ def main():
     if sync_type == 2:
         # Full sync of jail_name with list_sync_targets (it's a single target though)
         try:
-            # This is a bit shit.  Access the sqlite3 database directly later
+            # This is a bit naff.  Access the sqlite3 database directly later
             ban_list = subprocess.run(['fail2ban-client', 'status', jail_name],
                                       check=True, capture_output=True, text=True)
             ban_list = str_rightback(ban_list.stdout.__str__().lower(), "ip list:").strip()
