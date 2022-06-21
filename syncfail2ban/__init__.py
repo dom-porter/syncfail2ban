@@ -27,7 +27,7 @@ import signal
 # Constants
 CONFIG_FILENAME = "config.cfg"
 CONFIG_PATH = "/etc/syncfail2ban"
-VERSION = "0.0.1.19062022"
+VERSION = "0.0.1"
 
 # Configure the global logger. Debug is enabled later once the config is read
 logging.basicConfig(filename="/var/log/syncfail2ban.log",
