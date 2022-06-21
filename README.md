@@ -93,6 +93,10 @@ The sync-jail is configured in such a way that fail2ban will never update it dur
         bantime  = -1
         ignoreip = 127.0.0.1/8 192.168.10.0/24
 
+* **Start the Server**
+
+       sudo service syncfail2ban start
+
 ## syncfail2ban-client
 
 The syncfail2ban-client app is used by the action to send information about the ban/unban action to the syncfail2ban server. It will NOT update the local fail2ban jail. It can also be used manually:
