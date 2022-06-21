@@ -14,17 +14,17 @@ install: $(service_dir) $(conf_dir) syncfail2ban.service
 	cp /usr/local/bin/syncfail2ban /etc/syncfail2ban
 	cp syncfail2ban/data/config.cfg /etc/syncfail2ban
 	systemctl daemon-reload
-    systemctl enable syncfail2ban
+	systemctl enable syncfail2ban
 
 uninstall:
 	systemctl stop syncfail2ban
 	systemctl disable syncfail2ban
 	rm -r $(service_dir)/syncfail2ban.service
 	systemctl daemon-reload
-    rm -r /etc/syncfail2ban
+	rm -r /etc/syncfail2ban
 
 clean:
 	systemctl disable syncfail2ban
-    rm syncfail2ban.service
-    rm -r /etc/syncfail2ban
-    systemctl daemon-reload
+	rm syncfail2ban.service
+	rm -r /etc/syncfail2ban
+	systemctl daemon-reload
