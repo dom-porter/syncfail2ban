@@ -13,7 +13,6 @@
 #  permissions and limitations under the License
 # *************************************************************************
 
-import pathlib
 import logging
 import time
 import zmq
