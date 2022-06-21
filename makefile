@@ -21,13 +21,13 @@ uninstall:
 	systemctl disable syncfail2ban
 	rm -r $(service_dir)/syncfail2ban.service
 	systemctl daemon-reload
-	rm /etc/syncfail2ban/syncfail2ban
-    rm /etc/syncfail2ban/syncfail2ban-client
-    pip uninstall syncfail2ban
+	rm -r /etc/syncfail2ban/syncfail2ban
+	rm -r /etc/syncfail2ban/syncfail2ban-client
+	pip uninstall syncfail2ban
 
 clean:
 	systemctl disable syncfail2ban || true
 	rm syncfail2ban.service || true
 	rm -r /etc/syncfail2ban || true
 	systemctl daemon-reload || true
-    pip uninstall syncfail2ban
+	pip uninstall syncfail2ban
