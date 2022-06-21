@@ -48,10 +48,6 @@ def send_message(message, ip_target, server_config):
         if poller.poll(int(server_config.timeout) * 1000):
             response_msg = mq_socket.recv_string()
 
-            # Just for testing so it will shutdown the server
-            # mq_socket.send_string("stop")
-            # response_msg = mq_socket.recv_string()
-
             return response_msg
         else:
             raise IOError("Timeout connecting to server {0}:{1}"
