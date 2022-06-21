@@ -28,7 +28,7 @@ class SyncOPNThread(Thread):
             else:
                 # sync message to all firewall targets
                 for ip_firewall in self._server_config.opn_fw_ip.split():
-                    logging.debug("SyncOPNThread: Processing - {0} to {1}".format(message, ip_firewall))
+                    logging.debug("SyncOPNThread: Processing - [{0}] {1}".format(ip_firewall, message))
                     response = self.sync_message_opn(ip_firewall, message)
                     if response == "1":
                         logger.info("[{0}] Updated firewall - {1}".format(ip_firewall, message))
@@ -46,8 +46,8 @@ class SyncOPNThread(Thread):
         str_action = str_message_split[1]
         str_ip_address = str_message_split[2]
 
-        opnsense = OpnSense(self._server_config.opn_key,
-                            self._server_config.opn_secret,
+        opnsense = OpnSense(self._server_config.opn_keys.get(f"{ip_target}_key", ""),
+                            self._server_config.opn_keys.get(f"{ip_target}_secret", ""),
                             ip_target,
                             self._server_config.opn_verify)
 

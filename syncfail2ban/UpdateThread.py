@@ -49,7 +49,6 @@ class UpdateThread(Thread):
 
             self._mq_socket.close()
             self._mq_context.term()
-            logger.info("Server shutdown")
             self.terminated.set()
 
         except zmq.ZMQError as e:

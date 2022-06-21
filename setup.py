@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='syncfail2ban',
-    version='0.0.1.20062022',
+    version='0.0.1.21062022',
     packages=find_packages(),
     pymodules =['syncfail2ban', 'syncfail2ban_client', ],
     entry_points={
@@ -16,5 +16,5 @@ setup(
     license='Apache License 2.0',
     author='Dominic Porter',
     author_email='open.source@dbpsolutions.com',
-    description='sync fail2ban jails across servers & with OPNSense aliases'
+    description='Sync fail2ban jails across servers & with OPNSense aliases'
 )

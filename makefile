@@ -9,9 +9,10 @@ syncfail2ban: syncfail2ban/__init__.py setup.py
 syncfail2ban.service: syncfail2ban/__init__.py
 
 install: $(service_dir) $(conf_dir) syncfail2ban.service
-	cp syncfail2ban.service $(service_dir)
+	cp syncfail2ban/data/syncfail2ban.service $(service_dir)
 	mkdir /etc/syncfail2ban
-	cp /usr/local/bin/syncfail2ban /etc/syncfail2ban
+	mv /usr/local/bin/syncfail2ban /etc/syncfail2ban
+	mv /usr/local/bin/syncfail2ban-client /etc/syncfail2ban
 	cp syncfail2ban/data/config.cfg /etc/syncfail2ban
 	systemctl daemon-reload
 

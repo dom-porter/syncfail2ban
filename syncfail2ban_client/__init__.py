@@ -8,6 +8,7 @@ from syncfail2ban.SyncConfig import SyncConfig
 
 # Constants
 CONFIG_FILENAME = "config.cfg"
+CONFIG_PATH = "/etc/syncfail2ban"
 
 
 def sigint_handler(sig, frame):
@@ -67,7 +68,7 @@ def str_rightback(str_string, str_pattern):
 
 def main():
     logging.basicConfig(filename="/var/log/syncfail2ban.log", level=logging.INFO, format="%(asctime)s-%(message)s")
-    server_config = SyncConfig(pathlib.Path(__file__).parent.absolute().__str__() + "/" + CONFIG_FILENAME)
+    server_config = SyncConfig(CONFIG_PATH + "/" + CONFIG_FILENAME)
 
     sync_type = 0
     list_sync_targets = ""

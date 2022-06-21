@@ -34,8 +34,7 @@ class SyncConfig(object):
         self._opn_fw_ip = self._config.get('default', 'opn_fw_ip', fallback="")
         self._opn_verify = self._config.getboolean('default', 'opn_verify', fallback=False)
         self._opn_aliases = dict(self._config['opn_aliases'])
-        self._opn_key = self._config.get('default', 'opn_key')
-        self._opn_secret = self._config.get('default', 'opn_secret')
+        self._opn_keys = dict(self._config['opn_keys'])
         self._debug = self._config.getboolean('default', 'log_debug', fallback=False)
 
     @property
@@ -79,12 +78,8 @@ class SyncConfig(object):
         return self._opn_aliases
 
     @property
-    def opn_key(self) -> str:
-        return self._opn_key
-
-    @property
-    def opn_secret(self) -> str:
-        return self._opn_secret
+    def opn_keys(self) -> dict:
+        return self._opn_keys
 
     @property
     def debug(self) -> bool:

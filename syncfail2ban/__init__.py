@@ -109,6 +109,8 @@ def main():
         sync_thread.join()
         opn_sync_thread.join()
 
+    logger.info("Server shutdown")
+
 
 if __name__ == '__main__':
     main()

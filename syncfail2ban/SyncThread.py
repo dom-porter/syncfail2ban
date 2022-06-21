@@ -29,7 +29,7 @@ class SyncThread(Thread):
                 # sync message to all sync targets
 
                 for ip_target in self._server_config.sync_servers.split():
-                    logger.debug("SyncThread: Processing - {0} with {1}".format(message, ip_target))
+                    logger.debug("SyncThread: Processing - [{0}] {1}".format(ip_target, message))
 
                     response = self.sync_message(ip_target, message)
                     if response == "1":
