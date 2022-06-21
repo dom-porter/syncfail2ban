@@ -21,7 +21,8 @@ uninstall:
 	systemctl disable syncfail2ban || true
 	rm -r $(service_dir)/syncfail2ban.service || true
 	systemctl daemon-reload || true
-	rm -r /etc/syncfail2ban || true
+	rm /etc/syncfail2ban/syncfail2ban || true
+    rm /etc/syncfail2ban/syncfail2ban-client || true
 
 clean:
 	systemctl disable syncfail2ban || true
