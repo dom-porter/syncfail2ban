@@ -19,7 +19,7 @@ The sync-jail is configured in such a way that fail2ban will never update it dur
 ***NOTE:***
 ***If at any point there is no network connection between servers ban/unban actions will not be sent to other servers and will not be sent when the connection is restored.*** 
 
-* Update Configuration
+* **Update Configuration**
 
       sudo nano /etc/syncfail2ban/config.cfg
   
@@ -34,7 +34,7 @@ The sync-jail is configured in such a way that fail2ban will never update it dur
       [jails]
       <PRIMARY-JAIL-NAME> = <SYNC-JAIL-NAME>
 
-* Create Sync Action
+* **Create Sync Action**
 
       sudo nano /etc/fail2ban/action.d/sync-action.cfg
 
@@ -45,11 +45,11 @@ The sync-jail is configured in such a way that fail2ban will never update it dur
       actionban = /etc/syncfail2ban/syncfail2ban-client -a <name> banip <ip>
       actionunban = /etc/syncfail2ban/syncfail2ban-client -a <name> unbanip <ip>
 
-* Create Dummy Log
+* **Create Dummy Log**
 
        sudo touch /var/log/dummy.log
 
-* Create Dummy Filter
+* **Create Dummy Filter**
 
        sudo nano /etc/fail2ban/filter.d/sync-filter.conf 
 
@@ -57,9 +57,11 @@ The sync-jail is configured in such a way that fail2ban will never update it dur
        failregex = (?<![\w\d])connect(?![\w\d]) fail2ban sync dummy filter\[<HOST>\]
        ignoreregex =
 
-* Update Jail Configuration
+* **Update Jail Configuration**
 
-  For each jail you which to synchronise add sync-action under action, then create a sync-jail config.
+  For each jail you wish to synchronise add sync-action under action, then create a sync-jail config.
+
+  Don't forget to make sure that the /etc/syncfail2ban/config.cfg [jails] section is correct.
 
         sudo nano /etc/fail2ban/jail.local
 
