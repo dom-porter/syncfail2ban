@@ -13,7 +13,7 @@ install: $(service_dir) $(conf_dir) syncfail2ban.service
 	mkdir /etc/syncfail2ban
 	cp /usr/local/bin/syncfail2ban /etc/syncfail2ban
 	cp /usr/local/bin/syncfail2ban-client /etc/syncfail2ban
-	cp syncfail2ban/data/config.cfg /etc/syncfail2ban
+	cp syncfail2ban/data/config.cfg /etc/syncfail2ban  || true
 	systemctl daemon-reload
 	systemctl enable syncfail2ban
 
