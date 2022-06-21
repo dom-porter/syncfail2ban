@@ -6,7 +6,11 @@ You are familiar with fail2ban and already have a working system.
 
 Python package manager PIP is installed.
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+      git clone https://github.com/syncfail2ban/syncfail2ban.git
+      cd syncfail2ban
+      sudo make
+      sudo make install
 
 ## Setup
 
@@ -79,7 +83,7 @@ The sync-jail is configured in such a way that fail2ban will never update it dur
 
 
         # Note - make sure that the bantime = -1
-        [postfix-default-sync]
+        [postfix-sync]
         enabled = true
         filter = sync-filter
         logpath = /var/log/dummy.log
