@@ -48,7 +48,7 @@ class SyncThread(Thread):
 
         try:
             mq_socket.setsockopt(zmq.LINGER, 0)
-            mq_socket.connect("tcp://%s:%s" % (self._server_config.mq_ip, self._server_config.mq_port))
+            mq_socket.connect("tcp://%s:%s" % (ip_target, self._server_config.mq_port))
             mq_socket.send_string(message)
             poller = zmq.Poller()
             poller.register(mq_socket, zmq.POLLIN)
