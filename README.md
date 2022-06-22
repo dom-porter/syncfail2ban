@@ -1,6 +1,15 @@
 ## Description
 As the name suggests, the app will synchronise fail2ban jails across servers.  It will also update OPNSense aliases which can then be used to block traffic at the firewall level.
 
+The logic of the fail2ban jail synchronisation is that IP addresses which are banned/unbanned on other servers are updated in a sync-jail on the local server, and not the primary jail where the ban/unban action took place.
+
+For example [Server A] --> Ban 40.67.89.7 in jail ssh --> SYNC --> [Server B] --> Ban 40.67.89.7 in jail ssh-sync
+
+The sync-jail is configured in such a way that fail2ban will never update it during normal operation and will be managed by syncfail2ban using the fail2ban-client.
+
+***NOTE:***
+***If at any point there is no network connection between servers ban/unban actions will not be sent to other servers and will not be sent when the connection is restored.*** 
+
 ## Assumptions
 You are familiar with fail2ban and already have a working system.
 
@@ -12,16 +21,15 @@ Python package manager PIP is installed.
       sudo make
       sudo make install
 
+## Uninstall
+  
+      From the directory where you installed from:
+
+      sudo make uninstall
+
+      If you wish to re-install after an uninstall you will need to re-run make.
+
 ## Setup
-
-The logic of the fail2ban jail synchronisation is that IP addresses which are banned/unbanned on other servers are updated in a sync-jail on the local server, and not the primary jail where the ban/unban action took place.
-
-For example [Server A] --> Ban 40.67.89.7 in jail ssh --> SYNC --> [Server B] --> Ban 40.67.89.7 in jail ssh-sync
-
-The sync-jail is configured in such a way that fail2ban will never update it during normal operation and will be managed by syncfail2ban using the fail2ban-client.
-
-***NOTE:***
-***If at any point there is no network connection between servers ban/unban actions will not be sent to other servers and will not be sent when the connection is restored.*** 
 
 * **Update Configuration**
 
