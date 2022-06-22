@@ -68,7 +68,7 @@ def main():
     server_config = SyncConfig(CONFIG_PATH + "/" + CONFIG_FILENAME)
 
     logger.info(f"====================================")
-    logger.info(f"    syncfail2ban v{VERSION}")
+    logger.info(f"        syncfail2ban v{VERSION}")
     logger.info(f"====================================")
 
     # Change logging level if debug enabled in the config file
