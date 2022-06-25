@@ -14,7 +14,7 @@
 # *************************************************************************
 
 import logging
-import logging.handlers
+from logging.handlers import RotatingFileHandler
 import time
 import zmq
 from syncfail2ban.UpdateThread import UpdateThread
