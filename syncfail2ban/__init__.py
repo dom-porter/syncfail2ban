@@ -79,8 +79,8 @@ def main():
 
     # Add the log message handler to the logger
     handler = logging.handlers.RotatingFileHandler(LOG_FILENAME,
-                                                   server_config.log_size,
-                                                   server_config.log_backups)
+                                                   int(server_config.log_size),
+                                                   int(server_config.log_backups))
 
     logger.addHandler(handler)
 
