@@ -51,6 +51,8 @@ class SyncConfig(object):
         self._opn_aliases = dict(self._config['opn_aliases'])
         self._opn_keys = dict(self._config['opn_keys'])
         self._debug = self._config.getboolean('default', 'log_debug', fallback=False)
+        self._log_size = self._config.get('default', 'log_max_size')
+        self._log_backups = self._config.get('default', 'log_backup_count')
 
     @property
     def is_f2b_sync(self) -> bool:
@@ -99,3 +101,11 @@ class SyncConfig(object):
     @property
     def debug(self) -> bool:
         return self._debug
+
+    @property
+    def log_size(self) -> str:
+        return self._log_size
+
+    @property
+    def log_backups(self) -> str:
+        return self._log_backups

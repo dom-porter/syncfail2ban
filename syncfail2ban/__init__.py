@@ -26,10 +26,11 @@ import signal
 # Constants
 CONFIG_FILENAME = "config.cfg"
 CONFIG_PATH = "/etc/syncfail2ban"
-VERSION = "0.0.1"
+LOG_FILENAME = "/var/log/syncfail2ban.log"
+VERSION = "0.0.2"
 
 # Configure the global logger. Debug is enabled later once the config is read
-logging.basicConfig(filename="/var/log/syncfail2ban.log",
+logging.basicConfig(filename=LOG_FILENAME,
                     level=logging.INFO,
                     format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger()
@@ -74,6 +75,13 @@ def main():
     # Change logging level if debug enabled in the config file
     if server_config.debug:
         logger.setLevel(logging.DEBUG)
+
+    # Add the log message handler to the logger
+    handler = logging.handlers.RotatingFileHandler(LOG_FILENAME,
+                                                   server_config.log_size,
+                                                   server_config.log_backups)
+
+    logger.addHandler(handler)
 
     work_queue = Queue()
     opn_work_queue = Queue()
