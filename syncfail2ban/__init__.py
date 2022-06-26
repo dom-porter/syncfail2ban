@@ -78,8 +78,8 @@ def main():
 
     # Add the log message handler to the logger
     handler = logging.handlers.RotatingFileHandler(LOG_FILENAME,
-                                                   server_config.log_size,
-                                                   server_config.log_backups)
+                                                   maxBytes=server_config.log_size,
+                                                   backupCount=server_config.log_backups)
 
     # Specify the required format
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
