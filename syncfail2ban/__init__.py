@@ -31,10 +31,13 @@ LOG_FILENAME = "/var/log/syncfail2ban.log"
 VERSION = "0.0.2"
 
 # Configure the global logger. Debug is enabled later once the config is read
-logging.basicConfig(filename=LOG_FILENAME,
-                    level=logging.INFO,
-                    format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger()
+#logging.basicConfig(filename=LOG_FILENAME,
+                   # level=logging.INFO,
+                   # format="%(asctime)s - %(levelname)s - %(message)s")
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 # Simple exception class used to trigger a shutdown
@@ -69,20 +72,25 @@ def main():
 
     server_config = SyncConfig(CONFIG_PATH + "/" + CONFIG_FILENAME)
 
-    logger.info(f"====================================")
-    logger.info(f"        syncfail2ban v{VERSION}")
-    logger.info(f"====================================")
-
     # Change logging level if debug enabled in the config file
     if server_config.debug:
         logger.setLevel(logging.DEBUG)
 
     # Add the log message handler to the logger
     handler = logging.handlers.RotatingFileHandler(LOG_FILENAME,
-                                                   int(server_config.log_size),
-                                                   int(server_config.log_backups))
+                                                   server_config.log_size,
+                                                   server_config.log_backups)
 
+    # Specify the required format
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    # Add formatter to handler
+    handler.setFormatter(formatter)
+    # Initialize logger instance with handler
     logger.addHandler(handler)
+
+    logger.info(f"====================================")
+    logger.info(f"        syncfail2ban v{VERSION}")
+    logger.info(f"====================================")
 
     work_queue = Queue()
     opn_work_queue = Queue()
