@@ -16,7 +16,7 @@ You are familiar with fail2ban and already have a working system.
 Python package manager PIP is installed.
 ## Installation
 
-      git clone https://github.com/dom-porter/syncfail2ban/syncfail2ban.git
+      git clone https://github.com/dom-porter/syncfail2ban.git
       cd syncfail2ban
       sudo make
       sudo make install
