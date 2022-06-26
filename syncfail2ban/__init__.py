@@ -30,12 +30,6 @@ CONFIG_PATH = "/etc/syncfail2ban"
 LOG_FILENAME = "/var/log/syncfail2ban.log"
 VERSION = "0.0.2"
 
-# Configure the global logger. Debug is enabled later once the config is read
-#logging.basicConfig(filename=LOG_FILENAME,
-                   # level=logging.INFO,
-                   # format="%(asctime)s - %(levelname)s - %(message)s")
-
-
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -111,6 +105,7 @@ def main():
         threads.append(opn_sync_thread)
 
         while True:
+            # Add thread management/checking
             time.sleep(0.5)
 
     except ServiceExit:
