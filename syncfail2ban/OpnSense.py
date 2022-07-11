@@ -18,6 +18,7 @@ import requests
 from syncfail2ban.Firewall import Firewall
 
 logger = logging.getLogger(__name__)
+requests.logger = logger
 
 
 class OpnSense(object):
