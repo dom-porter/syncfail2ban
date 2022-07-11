@@ -123,10 +123,10 @@ class UpdateThread(Thread):
                     text=True)
 
                 if str(result.stdout).strip() == "1":
-                    logger.info("Updating local server: fail2ban-client set {0} {1} {2} - Success"
+                    logger.info("[local] fail2ban-client set {0} {1} {2} - Success"
                                 .format(str_jail, str_action,  str_ip_address))
                 else:
-                    logger.error("Updating local server: fail2ban-client set {0} {1} {2} - Failure, check fail2ban log"
+                    logger.error("[local] fail2ban-client set {0} {1} {2} - Failure, check fail2ban log"
                                  .format(str_jail, str_action, str_ip_address))
 
             except subprocess.CalledProcessError as e:
