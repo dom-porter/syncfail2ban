@@ -16,7 +16,7 @@ You are familiar with fail2ban and already have a working system.
 Python package manager PIP is installed.
 ## Installation
 
-      git clone https://github.com/dom-porter/syncfail2ban/syncfail2ban.git
+      git clone https://github.com/dom-porter/syncfail2ban.git
       cd syncfail2ban
       sudo make
       sudo make install
@@ -87,7 +87,7 @@ Python package manager PIP is installed.
         findtime  = 3d
         maxretry = 1
         bantime  = 30d
-        ignoreip = 127.0.0.1/8 192.168.10.0/24
+        ignoreip = 127.0.0.1/8 192.168.1.0/24
 
 
         # Note - make sure that the bantime = -1
@@ -99,7 +99,7 @@ Python package manager PIP is installed.
         findtime  = 3d
         maxretry = 1
         bantime  = -1
-        ignoreip = 127.0.0.1/8 192.168.10.0/24
+        ignoreip = 127.0.0.1/8 192.168.1.0/24
 
 * **Start the Server**
 
@@ -120,7 +120,7 @@ The syncfail2ban-client app is used by the action to send information about the 
     syncfail2ban -f <JAIL-NAME>
 
     Example:
-    sudo /etc/syncfail2ban/syncfail2ban-client -a postfix
+    sudo /etc/syncfail2ban/syncfail2ban-client -f postfix
 
 ## License
 Apache License Version 2.0

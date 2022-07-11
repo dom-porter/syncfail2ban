@@ -14,6 +14,7 @@
 # *************************************************************************
 
 import logging
+from logging.handlers import RotatingFileHandler
 import time
 import zmq
 from syncfail2ban.UpdateThread import UpdateThread
@@ -28,11 +29,8 @@ CONFIG_FILENAME = "config.cfg"
 CONFIG_PATH = "/etc/syncfail2ban"
 VERSION = "0.0.4"
 
-# Configure the global logger. Debug is enabled later once the config is read
-logging.basicConfig(filename="/var/log/syncfail2ban.log",
-                    level=logging.INFO,
-                    format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 # Simple exception class used to trigger a shutdown
@@ -67,13 +65,25 @@ def main():
 
     server_config = SyncConfig(CONFIG_PATH + "/" + CONFIG_FILENAME)
 
-    logger.info(f"====================================")
-    logger.info(f"        syncfail2ban v{VERSION}")
-    logger.info(f"====================================")
-
     # Change logging level if debug enabled in the config file
     if server_config.debug:
         logger.setLevel(logging.DEBUG)
+
+    # Add the log message handler to the logger
+    handler = logging.handlers.RotatingFileHandler(LOG_FILENAME,
+                                                   maxBytes=server_config.log_size,
+                                                   backupCount=server_config.log_backups)
+
+    # Specify the required format
+    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    # Add formatter to handler
+    handler.setFormatter(formatter)
+    # Initialize logger instance with handler
+    logger.addHandler(handler)
+
+    logger.info(f"====================================")
+    logger.info(f"        syncfail2ban v{VERSION}")
+    logger.info(f"====================================")
 
     work_queue = Queue()
     opn_work_queue = Queue()
@@ -94,6 +104,7 @@ def main():
         threads.append(opn_sync_thread)
 
         while True:
+            # Add thread management/checking
             time.sleep(0.5)
 
     except ServiceExit:
