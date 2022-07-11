@@ -18,6 +18,7 @@ import logging
 import sys
 import subprocess
 import signal
+import sqlite3
 from syncfail2ban.SyncConfig import SyncConfig
 
 # Constants
@@ -66,7 +67,7 @@ def send_message(message, ip_target, server_config):
         return "99"
 
 
-# Searches srtString from right to left for strPattern and returns a substring
+# Searches strString from right to left for strPattern and returns a substring
 # containing the chars in the string that follow the pattern
 def str_rightback(str_string, str_pattern):
     str_reversed = str_string[::-1]
@@ -74,6 +75,13 @@ def str_rightback(str_string, str_pattern):
     end = str_reversed.find(str_reversed_pattern)
     str_return = str_reversed[0:end]
     return str_return[::-1]
+
+
+def get_db_path() -> str:
+    db_file = subprocess.run(['fail2ban-client', 'get', 'dbfile'],
+                             check=True, capture_output=True, text=True)
+
+    return str_rightback(db_file.stdout.__str__(), "-").strip()
 
 
 def main():
@@ -111,15 +119,13 @@ def main():
     if sync_type == 2:
         # Full sync of jail_name with list_sync_targets (it's a single target though)
         try:
-            # This is a bit naff.  Access the sqlite3 database directly later
-            ban_list = subprocess.run(['fail2ban-client', 'status', jail_name],
-                                      check=True, capture_output=True, text=True)
-            ban_list = str_rightback(ban_list.stdout.__str__().lower(), "ip list:").strip()
+            connection = sqlite3.connect(get_db_path())
+            cursor = connection.cursor()
+            select = f"SELECT ip FROM bips where jail='{jail_name}';"
+            cursor.execute(select)
 
-            ban_list = ban_list.split()
-
-            for ban_ip in ban_list:
-                message = "{0} banip {1}".format(jail_name, ban_ip)
+            for row in cursor:
+                message = "{0} banip {1}".format(jail_name, row[0])
                 response = send_message(message, local_server, server_config)
 
                 if response == "1":
