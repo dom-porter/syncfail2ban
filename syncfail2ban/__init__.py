@@ -27,6 +27,7 @@ import signal
 # Constants
 CONFIG_FILENAME = "config.cfg"
 CONFIG_PATH = "/etc/syncfail2ban"
+LOG_FILENAME = "/var/log/syncfail2ban.log"
 VERSION = "0.0.4"
 
 logger = logging.getLogger(__name__)
