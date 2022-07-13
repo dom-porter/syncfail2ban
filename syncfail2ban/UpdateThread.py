@@ -81,8 +81,6 @@ class UpdateThread(Thread):
         # str_message_split[1] = banip or unbanip
         # str_message_split[2] = IP address
 
-        # logging.debug("Debug: Received message - {0}" .format(str_message))
-
         str_message_split = str_message.split()
         str_jail = str_message_split[0]
         str_action = str_message_split[1]
