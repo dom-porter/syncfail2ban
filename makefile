@@ -6,8 +6,6 @@ service_dir=/etc/systemd/system
 syncfail2ban: syncfail2ban/__init__.py setup.py
 	pip install .
 
-syncfail2ban.service: syncfail2ban/__init__.py
-
 install: $(service_dir) $(conf_dir) syncfail2ban.service
 	cp syncfail2ban/data/syncfail2ban.service $(service_dir)
 	mkdir /etc/syncfail2ban  || true
